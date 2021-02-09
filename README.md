@@ -1,5 +1,12 @@
 # Change Data Capture example (Debezium + StreamSets)
 
+Оригинал: https://github.com/Gorini4/debezium_cdc
+
+StreamSets Available Stage Libraries: https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Installation/AddtionalStageLibs.html#concept_evs_xkm_s5
+
+
+
+
 ## Запуск
 
 1. Выполните в консоли `docker-compose up`. В результате будут развернуты докер-контейнеры со всеми необходимыми сервисами.
@@ -14,7 +21,7 @@
     * Kafka Consumer
     * Hadoop FS
     * Остальные операторы выбирайте на свое усмотрение
-  
+
 Дополнительная информация:
 * [StreamSets tutorial](https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Tutorial/BasicTutorial.html)
 * [Пример StreamSets + Kafka](https://youtu.be/SiZrkyEzpJc?t=491)
@@ -37,5 +44,3 @@
 ## Дополнительная задача
 
 Реализовать загрузку снепшота таблицы **inventory.customers** с помощью Spark в Hadoop и прислать ссылку на репозиторий с кодом.
-
-

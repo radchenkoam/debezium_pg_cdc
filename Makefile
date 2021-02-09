@@ -8,3 +8,40 @@ create-consumer:
     --property print.key=true \
 		--property print.value=false \
     --topic dbserver1.inventory.customers
+
+groups-list:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-consumer-groups.sh --bootstrap-server kafka:9092 --list
+
+groups-status:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-consumer-groups.sh \
+		--bootstrap-server kafka:9092 --all-groups --describe
+
+topics-list:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-topics.sh --list \
+		--zookeeper zookeeper:2181
+
+customers-all:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-console-consumer.sh \
+    --bootstrap-server kafka:9092 \
+    --from-beginning \
+    --topic dbserver1.inventory.customers
+
+customers-last:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-console-consumer.sh \
+    --bootstrap-server kafka:9092 \
+		--partition 0 \
+		--offset latest 1 \
+    --topic dbserver1.inventory.customers
+
+errors-all:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-console-consumer.sh \
+    --bootstrap-server kafka:9092 \
+    --from-beginning \
+    --topic errors
+
+errors-last:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-console-consumer.sh \
+		--bootstrap-server kafka:9092 \
+		--partition 0 \
+		--offset latest 1 \
+		--topic errors

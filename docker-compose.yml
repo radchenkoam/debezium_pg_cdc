@@ -3,14 +3,14 @@ version: '2'
 services:
 
   zookeeper:
-    image: debezium/zookeeper:0.9
+    image: debezium/zookeeper:1.5
     ports:
      - 2181:2181
      - 2888:2888
      - 3888:3888
 
   kafka:
-    image: debezium/kafka:0.9
+    image: debezium/kafka:1.5
     ports:
      - 9092:9092
     links:
@@ -19,7 +19,7 @@ services:
      - ZOOKEEPER_CONNECT=zookeeper:2181
 
   postgres:
-    image: debezium/example-postgres:0.9
+    image: debezium/example-postgres:1.5
     ports:
      - 5432:5432
     environment:
@@ -27,7 +27,7 @@ services:
      - POSTGRES_PASSWORD=postgres
 
   connect:
-    image: debezium/connect:0.9
+    image: debezium/connect:1.2
     ports:
      - 8083:8083
     links:
@@ -45,15 +45,34 @@ services:
     links:
       - postgres
 
+#список доступных библиотек
+#docker run --rm streamsets/datacollector:3.9.1 stagelibs -list
+#  streamsets:
+#    image: streamsets/datacollector:3.22.0-latest
+#    ports:
+#      - 18630:18630
+#  volumes:
+#    - type: volumes
+#    source: ./streamsets/sdc-stagelibs
+#    target: /opt/streamsets-datacollector-3.9.1/streamsets-libs
+#    - type: volumes
+#    source: /data
+#    target: ./streamsets/sdc-data
+#    build:
+#      context: ./streamsets
+#      args:
+#        SDC_LIBS: streamsets-datacollector-apache-kafka_2_0-lib,streamsets-datacollector-cdh_6_0-lib
+
   streamsets:
     build:
       context: ./streamsets
       args:
-        SDC_LIBS: streamsets-datacollector-apache-kafka_2_0-lib,streamsets-datacollector-cdh_5_16-lib
+        SDC_LIBS: streamsets-datacollector-apache-kafka_2_0-lib,streamsets-datacollector-cdh_6_0-lib,streamsets-datacollector-dataformats-lib,streamsets-datacollector-jdbc-lib
     ports:
       - 18630:18630
     volumes:
       - ./streamsets/sdc-data:/data
+      - ./streamsets/sdc-stagelibs:/opt/streamsets-datacollector-3.9.1/streamsets-libs
 
   # HDFS namenode
   namenode:
