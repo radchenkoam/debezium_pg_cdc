@@ -27,7 +27,7 @@ services:
      - POSTGRES_PASSWORD=postgres
 
   connect:
-    image: debezium/connect:1.2
+    image: debezium/connect:1.5
     ports:
      - 8083:8083
     links:
@@ -47,32 +47,19 @@ services:
 
 #список доступных библиотек
 #docker run --rm streamsets/datacollector:3.9.1 stagelibs -list
-#  streamsets:
-#    image: streamsets/datacollector:3.22.0-latest
-#    ports:
-#      - 18630:18630
-#  volumes:
-#    - type: volumes
-#    source: ./streamsets/sdc-stagelibs
-#    target: /opt/streamsets-datacollector-3.9.1/streamsets-libs
-#    - type: volumes
-#    source: /data
-#    target: ./streamsets/sdc-data
-#    build:
-#      context: ./streamsets
-#      args:
-#        SDC_LIBS: streamsets-datacollector-apache-kafka_2_0-lib,streamsets-datacollector-cdh_6_0-lib
 
   streamsets:
     build:
       context: ./streamsets
       args:
-        SDC_LIBS: streamsets-datacollector-apache-kafka_2_0-lib,streamsets-datacollector-cdh_6_0-lib,streamsets-datacollector-dataformats-lib,streamsets-datacollector-jdbc-lib
+        SDC_LIBS: streamsets-datacollector-cdh_6_0-lib
+        #SDC_LIBS: streamsets-datacollector-apache-kafka_2_0-lib,streamsets-datacollector-cdh_6_0-lib
     ports:
       - 18630:18630
     volumes:
       - ./streamsets/sdc-data:/data
-      - ./streamsets/sdc-stagelibs:/opt/streamsets-datacollector-3.9.1/streamsets-libs
+      #- ./streamsets/sdc-stagelibs:/opt/streamsets-datacollector-3.9.1/streamsets-libs
+      #- ./streamsets/sdc-stagelibs:/opt/streamsets-datacollector-3.9.1/streamsets-libs-extras
 
   # HDFS namenode
   namenode:
