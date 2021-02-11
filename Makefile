@@ -1,14 +1,6 @@
 register-postgres:
 	curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-postgres.json
 
-create-consumer:
-	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-console-consumer.sh \
-    --bootstrap-server kafka:9092 \
-    --from-beginning \
-    --property print.key=true \
-		--property print.value=false \
-    --topic dbserver1.inventory.customers
-
 groups-list:
 	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-consumer-groups.sh --bootstrap-server kafka:9092 --list
 
@@ -31,6 +23,40 @@ customers-last:
     --bootstrap-server kafka:9092 \
 		--partition 0 \
 		--offset latest 1 \
+    --topic dbserver1.inventory.customers
+
+customers-key-all:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-console-consumer.sh \
+    --bootstrap-server kafka:9092 \
+    --from-beginning \
+    --property print.key=true \
+		--property print.value=false \
+    --topic dbserver1.inventory.customers
+
+customers-key-last:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-console-consumer.sh \
+    --bootstrap-server kafka:9092 \
+		--partition 0 \
+		--offset latest 1 \
+    --property print.key=true \
+		--property print.value=false \
+    --topic dbserver1.inventory.customers
+
+customers-key-all-avro:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-avro-console-consumer.sh \
+    --bootstrap-server kafka:9092 \
+    --from-beginning \
+    --property print.key=true \
+		--property print.value=false \
+    --topic dbserver1.inventory.customers
+
+customers-key-last-avro:
+	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-avro-console-consumer.sh \
+    --bootstrap-server kafka:9092 \
+		--partition 0 \
+		--offset latest 1 \
+    --property print.key=true \
+		--property print.value=false \
     --topic dbserver1.inventory.customers
 
 errors-all:

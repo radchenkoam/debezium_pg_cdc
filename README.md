@@ -54,3 +54,8 @@ StreamSets Available Stage Libraries: https://streamsets.com/documentation/datac
 
 список доступных библиотек
 docker run --rm streamsets/datacollector:3.21.0 stagelibs -list
+
+Формат Avro с использованием конвертера Apicurio Avro
+curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-key
+curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-value
+curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-value | jq .
