@@ -2,7 +2,6 @@
 
 Оригинал: https://github.com/Gorini4/debezium_cdc
 
-StreamSets Available Stage Libraries: https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Installation/AddtionalStageLibs.html#concept_evs_xkm_s5
 
 
 
@@ -28,6 +27,7 @@ StreamSets Available Stage Libraries: https://streamsets.com/documentation/datac
 * Адрес Kafka - `kafka:9092`
 * Адрес zookeeper - `zookeeper:2181`
 * Адрес Hadoop - `hadoop:9000`
+* Адрес Hadoop - `hdfs://namenode:9000`
 
 ## Требования
 
@@ -44,3 +44,13 @@ StreamSets Available Stage Libraries: https://streamsets.com/documentation/datac
 ## Дополнительная задача
 
 Реализовать загрузку снепшота таблицы **inventory.customers** с помощью Spark в Hadoop и прислать ссылку на репозиторий с кодом.
+
+
+Avro Serialization / Deploying with Debezium containers
+https://debezium.io/documentation/reference/1.4/configuration/avro.html#deploying-with-debezium-containers
+
+StreamSets Available Stage Libraries: https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Installation/AddtionalStageLibs.html#concept_evs_xkm_s5
+
+
+список доступных библиотек
+docker run --rm streamsets/datacollector:3.21.0 stagelibs -list

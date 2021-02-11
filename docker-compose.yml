@@ -15,6 +15,8 @@ services:
      - 9092:9092
     links:
      - zookeeper
+    depends_on:
+     - zookeeper
     environment:
      - ZOOKEEPER_CONNECT=zookeeper:2181
 
@@ -26,41 +28,61 @@ services:
      - POSTGRES_USER=postgres
      - POSTGRES_PASSWORD=postgres
 
+  apicurio:
+    image: apicurio/apicurio-registry-mem:1.3.2.Final
+    ports:
+      - 8080:8080
+    depends_on:
+     - kafka
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - REGISTRY_URL=http://apicurio:8080
+
   connect:
     image: debezium/connect:1.4
     ports:
      - 8083:8083
     links:
-     - kafka
      - zookeeper
+     - kafka
      - postgres
+     - apicurio
+    depends_on:
+     - postgres
+     - apicurio
     environment:
-     - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1
      - CONFIG_STORAGE_TOPIC=my_connect_configs
      - OFFSET_STORAGE_TOPIC=my_connect_offsets
      - STATUS_STORAGE_TOPIC=my_connect_statuses
-
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - ENABLE_APICURIO_CONVERTERS=true
+     - KEY_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
+     - VALUE_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
+     - CONNECT_KEY_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
+     - CONNECT_KEY_CONVERTER_APICURIO.REGISTRY_URL=http://apicurio:8080
+     - CONNECT_KEY_CONVERTER_APICURIO.REGISTRY_GLOBAL-ID=io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy
+     - CONNECT_VALUE_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
+     - CONNECT_VALUE_CONVERTER_APICURIO_REGISTRY_URL=http://apicurio:8080
+     - CONNECT_VALUE_CONVERTER_APICURIO_REGISTRY_GLOBAL-ID=io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy
+    
   generator:
     build: ./generator
     links:
       - postgres
-
-#список доступных библиотек
-#docker run --rm streamsets/datacollector:3.9.1 stagelibs -list
+    depends_on:
+      - postgres
 
   streamsets:
     build:
       context: ./streamsets
       args:
-        SDC_LIBS: streamsets-datacollector-cdh_6_0-lib
+        SDC_LIBS: streamsets-datacollector-apache-kafka_2_6-lib,streamsets-datacollector-cdh_6_3-lib
         #SDC_LIBS: streamsets-datacollector-apache-kafka_2_0-lib,streamsets-datacollector-cdh_6_0-lib
     ports:
       - 18630:18630
     volumes:
       - ./streamsets/sdc-data:/data
-      #- ./streamsets/sdc-stagelibs:/opt/streamsets-datacollector-3.9.1/streamsets-libs
-      #- ./streamsets/sdc-stagelibs:/opt/streamsets-datacollector-3.9.1/streamsets-libs-extras
 
   # HDFS namenode
   namenode:
