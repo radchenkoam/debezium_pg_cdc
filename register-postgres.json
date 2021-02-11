@@ -11,11 +11,9 @@
         "database.include": "inventory",
         "database.history.kafka.bootstrap.servers": "kafka:9092",
         "database.history.kafka.topic": "schema-changes.inventory",
-        "key.converter": "io.apicurio.registry.utils.converter.AvroConverter",
-        "key.converter.apicurio.registry.url": "http://apicurio:8080/api",
-        "key.converter.apicurio.registry.global-id": "io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy",
-        "value.converter": "io.apicurio.registry.utils.converter.AvroConverter",
-        "value.converter.apicurio.registry.url": "http://apicurio:8080/api",
-        "value.converter.apicurio.registry.global-id": "io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy"
+        "key.converter": "io.confluent.connect.avro.AvroConverter",
+        "value.converter": "io.confluent.connect.avro.AvroConverter",
+        "key.converter.schema.registry.url": "http://apicurio:8080/api/ccompat",
+        "value.converter.schema.registry.url": "http://apicurio:8080/api/ccompat"
     }
 }

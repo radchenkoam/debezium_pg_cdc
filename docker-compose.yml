@@ -51,21 +51,13 @@ services:
      - postgres
      - apicurio
     environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1
      - CONFIG_STORAGE_TOPIC=my_connect_configs
      - OFFSET_STORAGE_TOPIC=my_connect_offsets
      - STATUS_STORAGE_TOPIC=my_connect_statuses
-     - BOOTSTRAP_SERVERS=kafka:9092
      - ENABLE_APICURIO_CONVERTERS=true
-     - KEY_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
-     - VALUE_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
-     - CONNECT_KEY_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
-     - CONNECT_KEY_CONVERTER_APICURIO.REGISTRY_URL=http://apicurio:8080
-     - CONNECT_KEY_CONVERTER_APICURIO.REGISTRY_GLOBAL-ID=io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy
-     - CONNECT_VALUE_CONVERTER=io.apicurio.registry.utils.converter.AvroConverter
-     - CONNECT_VALUE_CONVERTER_APICURIO_REGISTRY_URL=http://apicurio:8080
-     - CONNECT_VALUE_CONVERTER_APICURIO_REGISTRY_GLOBAL-ID=io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy
-    
+
   generator:
     build: ./generator
     links:
