@@ -22,11 +22,11 @@
 - после клонирования репозитория выполнить по очереди команды:
 ``` bash
 $ cd debezium_pg_cdc
-$ mkdir ./streamsets/sdc-data
+$ mkdir -pv ./streamsets/sdc-data
 $ sudo chmod -R 777 ./streamsets/sdc-data/
-$ docker-compose pull
-$ docker-compose build
-$ docker-compose up
+$ docker-compose -f docker-compose-apicurio.yml pull
+$ docker-compose -f docker-compose-apicurio.yml build
+$ docker-compose -f docker-compose-apicurio.yml up
 $ make register-postgres-apicurio
 ```
 
