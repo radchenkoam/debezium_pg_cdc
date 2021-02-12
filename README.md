@@ -1,6 +1,6 @@
 <div align="center"><h2>PostgreSQL Change Data Capture example</h2></div>
 
-<div align="center"><h3></br>PostgreSQL + Debezium + APICURIO Registry + StreamSets + Hadoop</h3></div>
+<div align="center"><h3></br>PostgreSQL + Debezium + APICURIO Registry + Kafka + StreamSets + Hadoop</h3></div>
 
 <div align="right">Оригинал взят <a href=https://github.com/Gorini4/debezium_cdc>отсюда</a></div>
 
