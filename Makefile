@@ -1,5 +1,5 @@
-register-postgres:
-	curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-postgres.json
+register-postgres-apicurio:
+	curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-postgres-apicurio.json
 
 groups-list:
 	docker-compose -f docker-compose.yml exec kafka /kafka/bin/kafka-consumer-groups.sh --bootstrap-server kafka:9092 --list

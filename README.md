@@ -1,63 +1,70 @@
-# Change Data Capture example (Debezium + StreamSets)
+<div align="center"><h2>PostgreSQL Change Data Capture example</h2></div>
 
-Оригинал: https://github.com/Gorini4/debezium_cdc
+<div align="center"><h3></br>PostgreSQL + Debezium + APICURIO Registry + StreamSets + Hadoop</h3></div>
 
+<div align="right">Оригинал взят <a href=https://github.com/Gorini4/debezium_cdc>отсюда</a></div>
 
+---
 
+### Краткое описание
+-разворачивается `PostgreSQL`, в нем создается тестовая БД `inventory`  
+-для фиксации всех изменений в БД создается коннектор `Debezium`  
+-коннектор `Debezium` отправляет сообщения об изменениях в топик `Kafka`  
+-для преобразования сообщений в формат `avro` используется хранилище схем `APICURIO Registry`  
+-для создания пайплайнов загрузки собщений из `Kafka` запускается `StreamSets`  
+-для хранения логов изменений в базе данных запускается `Hadoop`  
 
+---
 
-## Запуск
+### Запуск
+-после клонирования репозитория выполнить по очереди команды:
+``` bash
+$ cd debezium_pg_cdc
+$ mkdir ./streamsets/sdc-data
+$ sudo chmod -R 777 ./streamsets/sdc-data/
+$ docker-compose pull
+$ docker-compose build
+$ docker-compose up
+$ make register-postgres-apicurio
+```
 
-1. Выполните в консоли `docker-compose up`. В результате будут развернуты докер-контейнеры со всеми необходимыми сервисами.
-2. Для запуска коннектора Debezium выполните в консоли `make register-postgres`.
-3. Чтобы увидеть логи изменений в базе, выполните `make create-consumer`. Это запустит kafka consumer, который подключится к топику, содержащему логи.
+---
 
-## Загрузка логов CDC в Hadoop
+### Дополнительная информация
+:link: [Debezium Documentation / Tutorial](https://debezium.io/documentation/reference/tutorial.html)  
+:link: [Debezium Documentation / Avro Serialization](https://debezium.io/documentation/reference/1.4/configuration/avro.html)  
+:link: [Debezium connector for PostgreSQL](https://debezium.io/documentation/reference/1.4/connectors/postgresql.html)  
+:link: [Debezium docker images Github](https://github.com/debezium/docker-images)  
+:link: [StreamSets Data Collector User Guide](https://streamsets.com/documentation/datacollector/latest/help/index.html)  
+:link: [StreamSets Data Collector User Guide / Basic Tutorial](https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Tutorial/BasicTutorial.html)  
+:link: [StreamSets docker image Github](https://github.com/streamsets/datacollector-docker)  
+:link: [Kafka 2.6 Documentation](https://kafka.apache.org/26/documentation.html)
 
-1. Зайдите в StreamSets по адресу [localhost:18630]. Логин/пароль: admin/admin.
-2. Пропустите первый преветственный экран и создайте новый пайплайн, нажав Create New Pipeline.
-3. Перед вами откроется окно редактирования пайплайна. Создайте пайплайн для загрузки логов CDC в Hadoop. Для этого вам понадобятся:
-    * Kafka Consumer
-    * Hadoop FS
-    * Остальные операторы выбирайте на свое усмотрение
+#### Порты
+Kafka: `kafka:9092`  
+Zookeeper: `zookeeper:2181`  
+Hadoop: `hadoop:9000`, `hdfs://namenode:9000`  
 
-Дополнительная информация:
-* [StreamSets tutorial](https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Tutorial/BasicTutorial.html)
-* [Пример StreamSets + Kafka](https://youtu.be/SiZrkyEzpJc?t=491)
-* Адрес Kafka - `kafka:9092`
-* Адрес zookeeper - `zookeeper:2181`
-* Адрес Hadoop - `hadoop:9000`
-* Адрес Hadoop - `hdfs://namenode:9000`
+---
 
-## Требования
+### Веб-интерфейсы
+:link: StreamSets: <http://localhost:18630/>  
+:link: Hadoop: <http://localhost:9870/>  
+:link: APICURIO Registry: <http://localhost:8080/>  
+:link: APICURIO Registry API: <http://localhost:8080/api>  
 
-* Пайплайн должен загружать данные об изменениях таблицы **inventory.customers** в Hadoop
-* Пайплайн должен сохранять всю историю изменений, включая операции INSERT, UPDATE, DELETE, а также проставлять тип операции в поле *act* - 'I'/'U'/'D'
-* Для операций DELETE должен проставляться флаг is_deleted = true
+---
 
-## Критерий оценки
+### Примечание
 
-* Пайплайн записывает все записи в Hadoop в формате Avro в плоской структуре, которая содержит все поля исходной таблицы плюс специальные поля, описанные в требованиях (в качестве подтверждения - скриншот работающего пайплайна) - 3 балла
-* Пайплайн обрабатывает все типы операций (в качестве подтверждения - описание алгоритма обработки каждой из операций с указанием использованных операторов StreamSets) - 1 балл
-* Для операций DELETE проставляется флаг is_deleted (в качестве подтверждения - скриншот вкладки настроек соответствующего оператора StreamSets) - 1 балл
+_Посмотреть список доступных библиотек StreamSets:_
+```bash
+$ docker run --rm streamsets/datacollector:3.21.0 stagelibs -list
+```
 
-## Дополнительная задача
-
-Реализовать загрузку снепшота таблицы **inventory.customers** с помощью Spark в Hadoop и прислать ссылку на репозиторий с кодом.
-
-
-Avro Serialization / Deploying with Debezium containers
-https://debezium.io/documentation/reference/1.4/configuration/avro.html#deploying-with-debezium-containers
-
-StreamSets Available Stage Libraries: https://streamsets.com/documentation/datacollector/latest/help/datacollector/UserGuide/Installation/AddtionalStageLibs.html#concept_evs_xkm_s5
-
-
-список доступных библиотек
-docker run --rm streamsets/datacollector:3.21.0 stagelibs -list
-
-Формат Avro с использованием конвертера Apicurio Avro
-curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-key
-curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-value
-curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-value | jq .
-
-curl -X GET http://localhost:8080/api/ccompat/dbserver1.inventory.customers-value
+_Для мониторинга работы Kafka можно использовать команды в `Makefile`:_
+```bash
+$ make команда
+```
+❗_но команды с `-avro-` работать не будут (они работают только в версии с `Confluent Schema Registry`),_  
+❗_и просмотр содержимого топиков тоже не особо полезен, т.к. содержимое будет выводиться в формате `avro`_
