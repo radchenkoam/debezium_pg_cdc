@@ -23,7 +23,7 @@
 ``` bash
 $ cd debezium_pg_cdc
 $ mkdir -pv ./streamsets/sdc-data
-$ sudo chmod -R 777 ./streamsets/sdc-data/
+$ sudo chmod -R 777 ./streamsets/sdc-data
 $ docker-compose -f docker-compose-apicurio.yml pull
 $ docker-compose -f docker-compose-apicurio.yml build
 $ docker-compose -f docker-compose-apicurio.yml up
@@ -62,12 +62,12 @@ Hadoop: `hadoop:9000`, `hdfs://namenode:9000`
 
 ### Примечание
 
-Посмотреть список доступных библиотек StreamSets:
+Посмотреть список доступных библиотек `StreamSets`:
 ```bash
 $ docker run --rm streamsets/datacollector:3.21.0 stagelibs -list
 ```
 
-Для мониторинга работы Kafka можно использовать команды в `Makefile`:
+Для мониторинга работы `Kafka` можно использовать команды в `Makefile`:
 ```bash
 $ make команда
 ```
