@@ -7,17 +7,19 @@
 ---
 
 ### Краткое описание
--разворачивается `PostgreSQL`, в нем создается тестовая БД `inventory`  
--для фиксации всех изменений в БД создается коннектор `Debezium`  
--коннектор `Debezium` отправляет сообщения об изменениях в топик `Kafka`  
--для преобразования сообщений в формат `avro` используется хранилище схем `APICURIO Registry`  
--для создания пайплайнов загрузки собщений из `Kafka` запускается `StreamSets`  
--для хранения логов изменений в базе данных запускается `Hadoop`  
+
+- разворачивается `PostgreSQL`, в нем создается тестовая БД `inventory`  
+- для фиксации всех изменений в БД создается коннектор `Debezium`  
+- коннектор `Debezium` отправляет сообщения об изменениях в топик `Kafka`  
+- для преобразования сообщений в формат `avro` используется хранилище схем `APICURIO Registry`  
+- для создания пайплайнов загрузки собщений из `Kafka` запускается `StreamSets`  
+- для хранения логов изменений в базе данных запускается `Hadoop`  
 
 ---
 
 ### Запуск
--после клонирования репозитория выполнить по очереди команды:
+
+- после клонирования репозитория выполнить по очереди команды:
 ``` bash
 $ cd debezium_pg_cdc
 $ mkdir ./streamsets/sdc-data
@@ -31,6 +33,7 @@ $ make register-postgres-apicurio
 ---
 
 ### Дополнительная информация
+
 :link: [Debezium Documentation / Tutorial](https://debezium.io/documentation/reference/tutorial.html)  
 :link: [Debezium Documentation / Avro Serialization](https://debezium.io/documentation/reference/1.4/configuration/avro.html)  
 :link: [Debezium connector for PostgreSQL](https://debezium.io/documentation/reference/1.4/connectors/postgresql.html)  
@@ -41,6 +44,7 @@ $ make register-postgres-apicurio
 :link: [Kafka 2.6 Documentation](https://kafka.apache.org/26/documentation.html)
 
 #### Порты
+
 Kafka: `kafka:9092`  
 Zookeeper: `zookeeper:2181`  
 Hadoop: `hadoop:9000`, `hdfs://namenode:9000`  
@@ -48,6 +52,7 @@ Hadoop: `hadoop:9000`, `hdfs://namenode:9000`
 ---
 
 ### Веб-интерфейсы
+
 :link: StreamSets: <http://localhost:18630/>  
 :link: Hadoop: <http://localhost:9870/>  
 :link: APICURIO Registry: <http://localhost:8080/>  
@@ -57,14 +62,14 @@ Hadoop: `hadoop:9000`, `hdfs://namenode:9000`
 
 ### Примечание
 
-_Посмотреть список доступных библиотек StreamSets:_
+Посмотреть список доступных библиотек StreamSets:
 ```bash
 $ docker run --rm streamsets/datacollector:3.21.0 stagelibs -list
 ```
 
-_Для мониторинга работы Kafka можно использовать команды в `Makefile`:_
+Для мониторинга работы Kafka можно использовать команды в `Makefile`:
 ```bash
 $ make команда
 ```
-❗_но команды с `-avro-` работать не будут (они работают только в версии с `Confluent Schema Registry`),_  
-❗_и просмотр содержимого топиков тоже не особо полезен, т.к. содержимое будет выводиться в формате `avro`_
+❗но команды с `-avro-` работать не будут (они работают только в версии с `Confluent Schema Registry`),  
+❗и просмотр содержимого топиков тоже не особо полезен, т.к. содержимое будет выводиться в формате `avro`
