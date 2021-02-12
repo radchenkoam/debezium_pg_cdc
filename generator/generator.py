@@ -59,8 +59,6 @@ def generate_operation():
     else:
         insert_new_customer(connection, cursor)
 
-import time
-
 ops_counter = 0
 
 time.sleep(20) # wait for postgres
