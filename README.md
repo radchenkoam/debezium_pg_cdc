@@ -59,3 +59,5 @@ docker run --rm streamsets/datacollector:3.21.0 stagelibs -list
 curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-key
 curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-value
 curl -X GET http://localhost:8080/api/artifacts/dbserver1.inventory.customers-value | jq .
+
+curl -X GET http://localhost:8080/api/ccompat/dbserver1.inventory.customers-value
